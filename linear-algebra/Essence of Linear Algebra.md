@@ -125,3 +125,60 @@ $$a\vec{v} + b\vec{w}$$
 - > a transformation is linear if it satisfies 2 properties
     > 1. additivity: $L(\vec{v} + \vec{w}) = L(\vec{v}) + L(\vec{w})$ 
     > 2. scaling: $L(c\vec{v}) = cL(\vec{v})$
+
+## Chapter 4: Matrix Multiplication as Composition
+### Recap
+- linear transformation are functions with input vector and output vector $L(\vec{v}) = \vec{w}$
+- we can think about the as stretching space such that grid lines stay parallel & evenly spaced, and so that origin remains fixed
+- linear transformation are determined by where they take the base vectors $\hat{i}, \hat{j}$
+- convention is a matrix where each column determines where base vector lands after transformation and the transformation is done by matrix-vector multiplication
+    $$\begin{bmatrix} a & b \\ c & d \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix} = x \begin{bmatrix} a \\ c \end{bmatrix} + y \begin{bmatrix} c \\ d \end{bmatrix} = \begin{bmatrix} ax + by \\ cx + dy \end{bmatrix}$$
+
+### Composition
+- how can we describe multitple (consecutive) linear transformations?
+- i.e. 1st rotate, 2nd shear → gives a new distinct linear transformation
+- this is called a **composition** of a rotation and a shear
+- can be expressed as its own matrix with final position of $\hat{i}, \hat{j}$
+    - you can always think of matrix multiplication visually as where the base vectors will finally land (even after multiple transformations)
+- individual steps should be equal to composition method
+    - 1st apply rotation matrix to vector
+    - 2nd apply shear matrix to vector
+    - or only apply composition matrix to vector 
+    $$\begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix} \left( \begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix} \right) = \begin{bmatrix} 1 & -1 \\ 1 & 0 \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix} $$
+- the composition matrix is the product of the original matrices
+    $$\begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix} \begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}  = \begin{bmatrix} 1 & -1 \\ 1 & 0 \end{bmatrix} $$
+    - multipying two matrices has geometric meaning of transforming the base vectors by one then another
+    - order of operations is right-to-left because of function notation $f(g(x))$
+
+### Example
+- multiply $M_2=\begin{bmatrix} 0 & 2 \\ 1 & 0 \end{bmatrix}$ by $M_1 = \begin{bmatrix} 1 & -2 \\ 1 & 0 \end{bmatrix}$
+    $$\begin{bmatrix} 0 & 2 \\ 1 & 0 \end{bmatrix} \begin{bmatrix} 1 & -2 \\ 1 & 0 \end{bmatrix}  = \begin{bmatrix} ? & ? \\ ? & ? \end{bmatrix} $$
+- step 1:
+    - where does $\hat{i}$ land?
+    - multiply $M_2$ by **left column** of $M_1$  using the matrix vector calculation
+    $$\begin{bmatrix} 0 & 2 \\ 1 & 0 \end{bmatrix}  \begin{bmatrix} 1 \\ 1 \end{bmatrix} = 1 \begin{bmatrix} 0 \\ 1 \end{bmatrix} + 1 \begin{bmatrix} 2 \\ 0 \end{bmatrix} =  \begin{bmatrix} 2 \\ 1 \end{bmatrix} $$
+    - this will be the **left column** of the composition matrix
+- step 2:
+    - where does $\hat{j}$ land?
+    - multiply $M_2$ by **right column** of $M_1$  using the matrix vector calculation
+    $$\begin{bmatrix} 0 & 2 \\ 1 & 0 \end{bmatrix}  \begin{bmatrix} -2 \\ 0 \end{bmatrix} = -2 \begin{bmatrix} 0 \\ 1 \end{bmatrix} + 0 \begin{bmatrix} 2 \\ 0 \end{bmatrix} =  \begin{bmatrix} 0 \\ -2 \end{bmatrix} $$
+    - this will be the **right column** of the composition matrix
+- finally, the composition matrix is
+    $$\begin{bmatrix} 0 & 2 \\ 1 & 0 \end{bmatrix} \begin{bmatrix} 1 & -2 \\ 1 & 0 \end{bmatrix}  = \begin{bmatrix} 2 & 0 \\ 1 & -2 \end{bmatrix} $$
+
+### Generalization
+- matrix-matrix multiplication
+    $$\begin{bmatrix} a & b \\ c & d \end{bmatrix} \begin{bmatrix} e & f \\ g & h \end{bmatrix}  = \begin{bmatrix} ? & ? \\ ? & ? \end{bmatrix} $$
+- 1: left column, where $\hat{i}$ lands
+    $$\begin{bmatrix} a & b \\ c & d \end{bmatrix} \begin{bmatrix} e \\ g \end{bmatrix} = e \begin{bmatrix} a \\ c \end{bmatrix} + g \begin{bmatrix} b \\ h \end{bmatrix} =  \begin{bmatrix} ae + bg \\ ce + dg \end{bmatrix} $$
+- 2: right column, where $\hat{j}$ lands
+    $$\begin{bmatrix} a & b \\ c & d \end{bmatrix} \begin{bmatrix} f \\ h \end{bmatrix} = f \begin{bmatrix} a \\ c \end{bmatrix} + h \begin{bmatrix} b \\ h \end{bmatrix} =  \begin{bmatrix} af + bh \\ cf + dh \end{bmatrix} $$
+- finally: composition matrix
+        $$\begin{bmatrix} a & b \\ c & d \end{bmatrix} \begin{bmatrix} e & f \\ g & h \end{bmatrix}  = \begin{bmatrix} ae + bg & af + bh \\ ce + dg & cf + dh \end{bmatrix} $$
+- order of operations matters $M_2 M_1 \ne M_1 M_2$, always from left to right
+- but matrix multiplication is associative $(AB)C = A(BC)$
+    - i.e. it doesn't matter if you multiply $AB$ or $BC$ first
+    - since the order is fixed from left to right, it doesn't matter where you put the parenthesis
+- the visual proof is better and easier to follow/understand than the symbolic proof 
+    - visualize matrix multiplication as where the base vectors will land
+
