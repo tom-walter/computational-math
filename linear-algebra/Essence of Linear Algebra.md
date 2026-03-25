@@ -182,3 +182,32 @@ $$a\vec{v} + b\vec{w}$$
 - the visual proof is better and easier to follow/understand than the symbolic proof 
     - visualize matrix multiplication as where the base vectors will land
 
+## Chapter 5: 3D Linear Transformation
+### Linear Transformation to Three Dimensions
+- the concepts from two dimensions carry over to high dimensions 
+- 3D linear transformation
+    - is a function that takes a 3D input vector and returns a 3D output vector
+    - keeps the grid lines parallel & evenly spaced, the origins remains fixed
+    - can be completely described by where the base vectors go
+- the 3rd unit vector is $\hat{k}$ (k-hat)
+
+### Transformation as a Matrix
+- we can visually think about the transformation in terms of where each basis vector goes
+    $$\hat{i} → \begin{bmatrix} 1 \\ 0 \\ -1 \end{bmatrix} \hat{j} → \begin{bmatrix} 1 \\ 1 \\ 0 \end{bmatrix} \hat{k} → \begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix} $$
+    - i.e. $\hat{i}$ moves one unit on the x-axis, no unit on the y-axis, and one flipped unit on the z-axis
+- collect these movements in a **3x3 matrix** where each column correspond to a basis vector
+    $$\begin{bmatrix} 1 & 1 & 1 \\ 0 & 1 & 0 \\ -1 & 0 & 1 \end{bmatrix}$$
+- example: rotation of 90° around the y-axis
+    $$\begin{bmatrix} 0 & 0 & 1 \\ 0 & 1 & 0 \\ -1 & 0 & 0 \end{bmatrix}$$
+
+### Application
+- **matrix-vector mulitplication**:
+    - apply each column from the matrix to the corresponding dimension of the vector
+    - then add together the intermediary results
+    $$\begin{bmatrix} 0 & 1 & 2 \\ 3 & 4 & 5 \\ 6 & 7 & 8 \end{bmatrix} \begin{bmatrix} x \\ y \\ z \end{bmatrix} = x\begin{bmatrix} 0 \\ 3 \\ 6 \end{bmatrix} + y\begin{bmatrix} 1 \\ 4 \\ 7 \end{bmatrix} +  z\begin{bmatrix} 2 \\ 5 \\ 8 \end{bmatrix}$$
+
+### Notes
+- high-dimensional matrix multiplication is important in
+    - computer graphics
+    - robotics
+    - AI/machine learning
