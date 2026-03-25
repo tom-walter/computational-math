@@ -78,3 +78,50 @@ $$a\vec{v} + b\vec{w}$$
 
 ### Technical Definition of Basis
 - > the basis of a vector space is a set of linearly independent vectors that span the full space
+
+## Chapter 3: Linear Transformations and Matrices
+### Matrices as Linear Transformations
+- a transformation is a function like $f(x)$ which takes an input and gives an output
+- in lin alg, such a function $L(\vec{v})$ takes an input vector and gives an output vector
+- visually speaking, a transformation is linear if
+    - all lines remrain lines
+    - the origins remains in place
+    - i.e. keeps grid lines parallel and evenly spaced
+- numerically, we ca think of this transformation of the grid as the transformation of vector space with $\hat{i}, \hat{j}$ 
+    - thus, we only need to understand how the basis vectors are transformed to deduce how any other vector will transformed
+- example
+    - transformation on $\hat{i}, \hat{j}$
+    $$\hat{i} → \begin{bmatrix} 1 \\ -2 \end{bmatrix} \text{ } \hat{j} → \begin{bmatrix} 3 \\ 0 \end{bmatrix}$$
+    - applying  $\hat{i}$ to x-coordinate and  $\hat{j}$ to y-coordinate
+    $$\begin{bmatrix} x \\ y \end{bmatrix} → x \begin{bmatrix} 1 \\ -2 \end{bmatrix} + y \begin{bmatrix} 3 \\ 0 \end{bmatrix} = \begin{bmatrix} 1x + 3y \\ -2x + 0y \end{bmatrix}$$
+- this means, we only need 4 numbers (for a 2D space) to describe any linear transformation
+- these 4 numbers are expressed as **2x2 matrix**, where the two columns describe how $\hat{i}, \hat{j}$ are transformed, e.g.
+    $$\begin{bmatrix} 3 & 2 \\ -2 & 1 \end{bmatrix}$$
+    - now we can apply columns of the matrix to the corresponding elements of a vector
+    $$\vec{v} = \begin{bmatrix} 5 \\ 7 \end{bmatrix}$$
+    $$5 \begin{bmatrix} 3 \\ -2 \end{bmatrix} + 7 \begin{bmatrix} 2 \\ 1 \end{bmatrix} $$
+    $$\begin{bmatrix} 15 + 14 \\ -10 + 7 \end{bmatrix} = \begin{bmatrix} 29 \\ -3 \end{bmatrix}$$
+
+### 2x2 Matrix
+- let's generalize this matrix as linear transformation of vectors
+- the column $a, c$ tranforms the $\hat{i}$ and the column $b, d$ the $\hat{j}$ basis vectors
+    $$\begin{bmatrix} a & b \\ c & d \end{bmatrix} \text{ }  \begin{bmatrix} x \\ y \end{bmatrix}$$
+    $$x \begin{bmatrix} a \\ c \end{bmatrix} + y \begin{bmatrix} c \\ d \end{bmatrix} = \begin{bmatrix} ax + by \\ cx + dy \end{bmatrix}$$
+- these steps descibe **matrix-vector multiplication**
+
+### Special Cases
+- counter-clockwise rotation of 90°
+    $$\begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}$$
+- "shear": $\hat{i}$ remains fixed but $\hat{j}$ moves over
+    $$\begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix}$$
+- linearly dependent: transforms 2D vector space into 1D vector space
+    $$\begin{bmatrix} 2 & -2 \\ 1 & -1 \end{bmatrix}$$
+
+### Summary
+- linear transformation move around space such that gridlines remain parellel and evenly spaced, and the origin remains fixed
+- matrices give us tool to describe these transformation in general and matrix multiplication with vector to apply them
+
+### Technical Definition of Linear
+- > a transformation is linear if it satisfies 2 properties
+    > 1. additivity: $L(\vec{v} + \vec{w}) = L(\vec{v}) + L(\vec{w})$ 
+    > 2. scaling: $L(c\vec{v}) = cL(\vec{v})$
