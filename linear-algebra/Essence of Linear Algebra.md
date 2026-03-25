@@ -297,3 +297,133 @@ $$a\vec{v} + b\vec{w}$$
 - determinant of a matrix product should be the same as product of the determinants of the original matrices
     $$\det(M_1 M_2) = \det(M_1) \det(M_2)$$
 - because the composition matrix transforms vector space in the same way as the original matrices applied consecutively, hence the scaling should be same
+
+## Chapter 7: Linear Systems of Equations
+### Learning Goals
+- visually understanding inverse matrices, column space, rank, null space
+- not the methods / algorithms to compute them such as Gaussian elimination, row echolon form (these resources already exists in adundance)
+
+### Linear Systems of Equations
+- linear algebra is important to any technical discipline
+    - it lets us solve linear systems of equations
+- linear systems of equations have
+    - a list of known variables (we want to know)
+    - a list of equations relating them
+- linearity constraints are that
+    - the variables are scaled by a constant
+    - the (scaled) variables are added 
+    - no interaction of variables, no fancy functions (e.g. no $\sin(x), e^x, xy$)
+- example of 3D or 3 unknowns
+    - we can organize such a system by lining up the variables and put lingering constants on the right
+    - we may have to write out zero or one coefficients to make this "alignment" more explicit
+    $$
+    \begin{align*}
+    2x + 5y + 3z & = -3 \\
+    4x + 0y + 8z & = 0 \\
+    1x + 3y + 0z & = 2
+    \end{align*}
+    $$
+- this can be written as a single vector equation with
+    - a matrix containing all constant coefficients
+    - a vector with the unknown variable 
+    - another vector with constants 
+    $$
+    \begin{bmatrix}
+    2 & 5 & 3 \\
+    4 & 0 & 8 \\
+    1 & 3 & 0 \\
+    \end{bmatrix}
+    \begin{bmatrix} x \\ y \\ z \end{bmatrix} 
+    = 
+    \begin{bmatrix} -3 \\ 0 \\ 2 \end{bmatrix} 
+    $$
+    - we denote this $A \bold{\vec{x}} = \bold{\vec{v}}$
+- now, we can recognize this as a linear transformation
+    - $A$ transforms $\bold{\vec{x}}$ that it will land on $\bold{\vec{v}}$
+    $$
+    \begin{align*}
+    2x + 2y &= -3 \\
+    1x + 3y & = -1
+    \end{align*}
+    $$
+    $$
+    \begin{bmatrix}
+    2 & 2 \\
+    1 & 3
+    \end{bmatrix}
+    \begin{bmatrix} x \\ y \end{bmatrix} 
+    = 
+    \begin{bmatrix} -4 \\ -1 \end{bmatrix} 
+    $$
+- to find the unknown variables, we want find the vector $\bold{\vec{x}}$  
+
+### Inverse and Identity Transformation
+- we already know $A$ can transform the vector space maintaining its dimension or squish it onto a lower dimension
+- mathematically, we have 2 cases
+    1. $\det(A) \ne 0$ : A has a non-zero determinant, maintaining dimensions
+    2. $\det(A) = 0$ : A has a zero determinant, reducing dimensions
+- for case 1
+    - there can only be one vector $\bold{\vec{x}}$ that will land on $\bold{\vec{v}}$ after transformation
+    - so to find this unknown $\bold{\vec{x}}$, we can reverse the transformation on the known vector $\bold{\vec{v}}$
+    - doing a transformation in reverse is its own linear transformation commonly called **inverse of a matrix** denotated as $A^{-1}$
+- example roration matrix
+    - if $A$ is counter-clockwise roration of 90°, the $A^{-1}$ is a clockwise roration of 90°
+    $$
+    \begin{align*}
+    A = \begin{bmatrix} 0 & -1 \\ 1 & 0  \end{bmatrix} \\
+    A^{-1} = \begin{bmatrix} 0 & 1 \\ -1 & 0  \end{bmatrix}
+    \end{align*}
+    $$
+- a matrix mulitplied by its inverse gives you the **identity transformation**
+    $$A^{-1} A = \begin{bmatrix} 1 & 0 \\ 0 & 1  \end{bmatrix} $$
+    - identity transformation is a linear transforrmation that does noething, i.e.
+    - it leaves $\hat{i}, \hat{j}$ were they arer / un-moved
+- after finding the inverse, we use it to solve for $\bold{\vec{v}}$
+    $$
+    \begin{align*}
+    A \bold{\vec{x}} &= \bold{\vec{v}} \\
+    A^{-1} A \bold{\vec{x}} &= A^{-1} \bold{\vec{v}} \\
+    \bold{\vec{x}} &= A^{-1} \bold{\vec{v}} 
+    \end{align*}
+    $$
+    - playing the transformation in reverse on the known, output vector given us the unknown input vector
+    - also works the same way in higher dimensions
+- considering the 2 cases again
+    - as long as $\det(A) \ne 0 → A^{-1}$ exists
+    - if $\det(A) = 0$, the space squished down in dimensions and there is no inverse
+    - because you cannot unsquish a line to turn it into a plane
+    - there is an exception if the solution does live on this lower dimension
+
+### Rank and Column Space
+- since matrices can have higher dimensions, the zero determinant cases can take on more than one form of rerducing dimensions, e.g. from 3D to plane (2D), from 3D to line (1D), etc.
+    - how can we describe this better?
+- if the output of a transformation lands on
+    1. a line (1D), we call the transformation rank 1
+    2. a plane (2D), we call it rank 2
+- **rank** means the number of dimension in the output of a transformation
+- for 2x2 matrices, rank 2 is the best it can be → called a **full rank**
+- for 3x3 matrices,
+    - rank 3 means the dimension have been maintained in 3D
+    - rank 2 means the dimension have collapsed from 3D to 2D
+- **column space** is the set of all possible outputs of $A \bold{\vec{v}}$ 
+    - as the  columns of the matrix tell you where the basis vectors land
+    - the span of columns is the "column space"
+- thus, rank is more precisely, the number of dimensions in the column space
+    - if it's as a high as can be, the matrix is full rank
+
+### Null Space
+- the  zero vector $\begin{bmatrix} 0 \\ 0 \end{bmatrix}$ is always in the column space as linear transformations keep the origin fixed
+- dimensional reduction
+    - for full rank transforrrmations, only zero vector lands on origin
+    - but for matrices below full rank a bunch of vectors can lend on zero after transformation
+    - for 2x2 matrix reducing to a line, there is a line of vectors "in opposite direction" that are all squished onto zero
+    - for 3x3 matrix reudcing to a line, there is a whole plane of vectors that are suqished onto the origin
+- the set of vectors landing on the origin is called **null space** or kernel
+- for linear systems of equations if $\bold{\vec{v}}$ is the zero vector, the null space gives you all possible solutions to the equation
+
+### Summary
+- we looked at linear systems of equations geometrically
+- each system has some kind of linear transformation associated
+- if this transformation has an inverse, we can use the inverse to solve the system
+- the idea of determinants and column space lets us know when a solution even exists
+- the idea of null space lets us know what the set of all possible solution can look like
