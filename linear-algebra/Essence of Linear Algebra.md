@@ -211,3 +211,89 @@ $$a\vec{v} + b\vec{w}$$
     - computer graphics
     - robotics
     - AI/machine learning
+
+## Chapter 6: The Determinant
+### Determinant as Scaling
+- linear transformations flip, stretch or squish the vector space
+- how much is the space of a given region squished or streched?
+- mathematically speaking: how much are **areas scaled** (2D) or the **volumes scaled** (3D)?
+
+### Scaling the Unit Square
+- the 1x1 unit square is the square described by the basis vectors $\hat{i}, \hat{j}$ 
+- the linear transformation affects the entire space (grid) in the same way, so every square on this grid is scaled in the same way as the unit square
+    - follows from fact that grid lines remain parallel and evenly spaced
+    - any shape that's not a square can be apprroximated by smaller squares
+- the scaling factor of the linear transforrmation called the **determinant**
+
+### Intuition in 2D
+- the determinant of a lin. transformation would be 3.0, if it increases the area of the unit square by factor 3
+    $$\det \left( \begin{bmatrix} 0.0 & 2.0 \\ -1.5 & 1.0 \end{bmatrix} \right) = 3.0$$
+- the determinant would by 0.5 if it squished all areas down by factor 0.5
+    $$\det \left( \begin{bmatrix} 0.5 & 0.5 \\ -0.5 & 0.5 \end{bmatrix} \right) = 0.5$$
+- the deterrminant of a 2D transformation is 0, if it squishes all space onto a line or single point (because transformation is *linearly dependent*)
+- determinants can also be negative
+    - when a transformation inverts the orientation changes
+    - i.e. if the 2D space was a paper and we flipped it over
+    - original $\hat{j}$ is left of $\hat{i}$, if after transformation it is right of $\hat{i}$, the orientation is inverted
+    $$\det \left( \begin{bmatrix} 2 & 1 \\ -1 & -3 \end{bmatrix} \right) = -5$$
+    - the absolute value still tells you the scaling
+
+### Intuition in 3D
+- the determinant tells you how volume gets scaled
+- the 1x1x1 unit cube whose edges sit on the basis vectors $\hat{i}, \hat{j}, \hat{k}$ 
+- after transformation the warped cube has a changed volume and the shape is called **parallelipiped**
+- the unit cube starts with volume of 1 and the determinant is the factor by which all volume are scaled, *the determinant is the volumne of the parallelipiped*
+- the deterrminant of a 3D transformation is 0, if it squishes all space into plane, line or single point
+- get orientation via right-hand rule
+    - thumb points up ↑ for $\hat{k}$
+    - index finger points foward ↖ for $\hat{i}$
+    - middle finger points left ← for $\hat{j}$
+
+### Visualize and Formalize
+<p align="center">
+<img src="essence-lin-alg-ch06-parallelogram.png" alt="Parallelogram" width=400/>
+</p>
+
+- our unit square gets transformed into some kind of parallelogram
+- this can described as
+    $$\det \left( \begin{bmatrix} a & b \\ c & d \end{bmatrix} \right) = (a+b) (c+d) -ac -db -2bc $$
+    $$\det \left( \begin{bmatrix} a & b \\ c & d \end{bmatrix} \right) = ad - bc$$
+- our unit cube gets transformed into a parallelipiped
+- the formula is
+    $$
+    \begin{align*}
+    \det \left(\begin{bmatrix}
+    a & b & c \\
+    d & e & f \\
+    g & h & i
+    \end{bmatrix}\right)
+    =
+    a\det
+    \left(\begin{bmatrix}
+    e & f \\
+    h & i
+    \end{bmatrix}\right)
+    \\
+    -
+    b\det
+    \left(\begin{bmatrix}
+    d & f \\
+    g & i
+    \end{bmatrix}\right)
+    \\
+    +
+    c\det
+    \left(\begin{bmatrix}
+    d & e \\
+    g & h
+    \end{bmatrix}\right)
+    \end{align*}
+    $$
+- there are algorithms for computing the determinant of large matrices
+    - LU decomposition
+    - Laplace expansion
+
+### Quiz
+- determinant of a matrix product should be the same as product of the determinants of the original matrices
+    $$\det(M_1 M_2) = \det(M_1) \det(M_2)$$
+- because the composition matrix transforms vector space in the same way as the original matrices applied consecutively, hence the scaling should be same
