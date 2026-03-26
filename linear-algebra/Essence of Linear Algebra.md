@@ -478,3 +478,34 @@ x \begin{bmatrix} a \\ c \end{bmatrix} + y \begin{bmatrix} c \\ d \end{bmatrix} 
 - if this transformation has an inverse, we can use the inverse to solve the system
 - the idea of determinants and column space lets us know when a solution even exists
 - the idea of null space lets us know what the set of all possible solution can look like
+
+## Chapter 8: Nonsquare Matrices
+Recap
+- mostly looked at 2d vectors and 2x2 matrices (sometimes extended to 3d vectors and 3x3 matrices)
+- these are called square matrices because the have same number of columns and rows
+- matrix shhape notation is *rows x columns* 
+    - square matrices are $n \times n$
+    - square matrices are $n \times m$
+
+What are nonsquare Matrices?
+- the number of columns and rows are not identical, e.g. a 3x2 matrix
+- linear transformations can change dimensions
+    ```math
+    \begin{bmatrix} 2 \\ 7 \end{bmatrix} → L(\vec{v}) → \begin{bmatrix} 1 \\ 8 \\ 2 \end{bmatrix} 
+    ```    
+    - it is linear, if grid lines remain parallel & evenly spaced and origins remains fixed
+- encoding a transformation from 2d vector to 3d vector 
+    - done with a 3x2 matrix, where 1st column shows where $\hat{i}$ lands and the 2nd column where $\hat{j}$ lands
+    - but by the 3rd row they also extend their position onto 3rd axis
+    ```math
+    \begin{bmatrix} 3 & 1 \\ 4 & 1 \\ 5 & 9 \end{bmatrix}
+    ```
+    - *column space* of this matrix is a 2D plane slicing through the origin of 3D space
+    - matrix is also *full rank* because number of dimension in this column is same as number of dimension in the input space
+
+Generalization
+- $n$ columns tells you $n$ dimensions input space
+- $m$ rows tells you $m$ dimensions of output space
+- a 3x2 matrix maps from 2D to 3D
+- a 2x3 matrix (2 rows, 3 cols) maps 3D to 2D
+- a 1x2 matric (1 row, 2 cols) maps from 2D to 1D, i.e. a line
