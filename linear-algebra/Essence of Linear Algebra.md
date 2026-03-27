@@ -203,7 +203,7 @@ x \begin{bmatrix} a \\ c \end{bmatrix} + y \begin{bmatrix} c \\ d \end{bmatrix} 
 ```math
 \begin{bmatrix} 0 & 2 \\ 1 & 0 \end{bmatrix}  \begin{bmatrix} -2 \\ 0 \end{bmatrix} = -2 \begin{bmatrix} 0 \\ 1 \end{bmatrix} + 0 \begin{bmatrix} 2 \\ 0 \end{bmatrix} =  \begin{bmatrix} 0 \\ -2 \end{bmatrix}
 ```
-    - this will be the **right column** of the composition matrix
+    - this will be the **right column** of the composition mat rix
 - finally, the composition matrix is
 ```math
 \begin{bmatrix} 0 & 2 \\ 1 & 0 \end{bmatrix} \begin{bmatrix} 1 & -2 \\ 1 & 0 \end{bmatrix}  = \begin{bmatrix} 2 & 0 \\ 1 & -2 \end{bmatrix}
@@ -479,15 +479,15 @@ x \begin{bmatrix} a \\ c \end{bmatrix} + y \begin{bmatrix} c \\ d \end{bmatrix} 
 - the idea of determinants and column space lets us know when a solution even exists
 - the idea of null space lets us know what the set of all possible solution can look like
 
-## Chapter 8: Nonsquare Matrices
-Recap
+## Chapter 8: Non-Square Matrices
+### Recap
 - mostly looked at 2d vectors and 2x2 matrices (sometimes extended to 3d vectors and 3x3 matrices)
 - these are called square matrices because the have same number of columns and rows
-- matrix shhape notation is *rows x columns* 
+- matrix shape notation is *rows x columns* 
     - square matrices are $n \times n$
-    - square matrices are $n \times m$
+    - non-square matrices are $n \times m$
 
-What are nonsquare Matrices?
+### What are non-square Matrices?
 - the number of columns and rows are not identical, e.g. a 3x2 matrix
 - linear transformations can change dimensions
     ```math
@@ -503,9 +503,86 @@ What are nonsquare Matrices?
     - *column space* of this matrix is a 2D plane slicing through the origin of 3D space
     - matrix is also *full rank* because number of dimension in this column is same as number of dimension in the input space
 
-Generalization
+### Generalization
 - $n$ columns tells you $n$ dimensions input space
 - $m$ rows tells you $m$ dimensions of output space
 - a 3x2 matrix maps from 2D to 3D
 - a 2x3 matrix (2 rows, 3 cols) maps 3D to 2D
 - a 1x2 matric (1 row, 2 cols) maps from 2D to 1D, i.e. a line
+
+## Chapter 9: Dot Products and Duality
+### Standarrd Introduction
+- dot products are usually introduced early in linear algebra
+- numerically, for two vectos of same dimension, it means
+    - pairing up the elements,
+    - multiply the pairs,
+    - sum the products 
+```math
+\begin{bmatrix} 2 \\ 7 \\ 1 \end{bmatrix}
+\cdot \begin{bmatrix} 8 \\ 2 \\ 8 \end{bmatrix}
+= 2⋅8 + 7⋅2 + 1⋅8 = 16 + 14 + 8 = 38
+```
+
+### Geometric Interpretation
+- dot product of two vectors $\vec{v} \cdot \vec{w}$ can be imagined as projecting one vector onto lineof the other vector
+    - $\vec{v} \cdot \vec{w}$ = (length of projected $\vec{w}$) ⋅ (length of $\vec{v}$)
+    - $\vec{v} \cdot \vec{w}$ = (length of $\vec{w}$) ⋅ (length of projected $\vec{v}$)
+- direction of vectors
+    - $\vec{v} \cdot \vec{w} > 0$ similar direction of vectors
+    - $\vec{v} \cdot \vec{w} = 0$ vectors are perpendicular
+    - $\vec{v} \cdot \vec{w} < 0$ opposing direction of vectors
+- the order of projection doesn't matter, even though the vectors may be not be symmetrical
+
+### Linear Transformation
+- duality of dot product and linear transformation
+- we already know that linear transformation can cast a vector to 1D, i.e. a line
+    - remember that a transformation is linear if the grid lines (ticks on number line) stay parallel & evenly spaced, origin stays fixed 
+- multiplying a 1x2 matrix with a 2d vector yields the same as the dot product of the matrix turned into another vector
+```math
+\begin{bmatrix} 1 & -2 \end{bmatrix}
+\begin{bmatrix} 4 \\ 3 \end{bmatrix}
+=
+\begin{bmatrix} 1 \\ -2 \end{bmatrix}
+\begin{bmatrix} 4 \\ 3 \end{bmatrix}
+= 4⋅1 + 3⋅-2
+```
+
+### Generalization
+<p align="center">
+<img src="essence-lin-alg-ch09-number-line.png" alt="Parallelogram" width=400/>
+</p>
+
+- image an additional number line diagonal in 2D space (origin fixed on origin)
+    - this line has a unit vector $\hat{u}$
+- we can map vectors from 2D space onto this numbers line
+    - this function is linear as points transformed points remain evenly spaced
+    - what is the matrix for this linear function that tells us wherre $\hat{i}$ and $\hat{j}$ land?
+
+<p align="center">
+<img src="essence-lin-alg-ch09-project-ux-uy.png" alt="Parallelogram" width=400/>
+</p>
+
+- line of symmetry
+    - $\hat{i}$ projects on $\hat{u}$ the same way $\hat{u}$ projects on $\hat{j}$ 
+    - but projecting $\hat{u}$ onto the x-axis is just its x-coordinate $u_x$
+    - the reasoning is same for $\hat{j}$ such that projecting $\hat{u}$ onto the y-axis is the y-coordinate $u_x$
+    - giving us $[u_x \ u_y]$ as 1x2 matrix
+- that's why projecting onto a line (linear transformation) is identical as doing as multipying to vectors
+    - matrix-vector product ⇔ dot product
+```math
+\begin{align*}
+\begin{bmatrix} u_x & u_y \end{bmatrix}
+\begin{bmatrix} x \\ x \end{bmatrix}
+&= u_x⋅x + u_y⋅y \\
+\begin{bmatrix} u_x \\ u_y \end{bmatrix}
+\begin{bmatrix} x \\ y \end{bmatrix}
+&= u_x⋅x + u_y⋅y
+\end{align*}
+```
+
+### Duality
+- in math, this called duality
+- it shows up in many places but it's hard to define
+- > duality = natural-but-surprising correspondence
+- > the dual of a vector is the linear transformation it encodes
+- the vector itself is not just an arrow in space but also linear transformation
