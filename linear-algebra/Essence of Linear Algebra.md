@@ -511,7 +511,7 @@ x \begin{bmatrix} a \\ c \end{bmatrix} + y \begin{bmatrix} c \\ d \end{bmatrix} 
 - a 1x2 matric (1 row, 2 cols) maps from 2D to 1D, i.e. a line
 
 ## Chapter 9: Dot Products and Duality
-### Standarrd Introduction
+### Standard Introduction
 - dot products are usually introduced early in linear algebra
 - numerically, for two vectos of same dimension, it means
     - pairing up the elements,
@@ -586,3 +586,66 @@ x \begin{bmatrix} a \\ c \end{bmatrix} + y \begin{bmatrix} c \\ d \end{bmatrix} 
 - > duality = natural-but-surprising correspondence
 - > the dual of a vector is the linear transformation it encodes
 - the vector itself is not just an arrow in space but also linear transformation
+
+## Chapter 10: Cross Products
+### Area and Orientation
+- in 2D, we have the vectors $\vec{v}, \vec{w}$ and they span out some parallelogram
+- the cross product is denoted $\vec{v} \times \vec{w}$ (with ×)
+- for now, the cross product is the area of the parallelogram and its orientation
+- the orientation means
+    - negative $-$, if $\vec{v}$ is left of $\vec{w}$
+    - positive $+$, if $\vec{v}$ is right of $\vec{w}$
+    - order of cross product matters $\vec{v} \times \vec{w} = - \vec{w} \times \vec{v}$
+- orientation is defined by basis vectors $\hat{i}, \hat{j}$
+    - their cross product is $\hat{i} \times \hat{j} = +1$
+    - since $\hat{i}$ is right of $\hat{j}$, it's positive
+- we can get the area from the determinant by translating both vector into columns of matrix
+    - note: or into rows since the determinant remains unaffected by transposing the matrix
+    - this matrix is the linear transforrmation that scales the area of the unit square giving us the parallelogram
+```math
+\vec{v} = \begin{bmatrix} 3 \\ 1 \end{bmatrix},
+\vec{w} = \begin{bmatrix} 2 \\ -1 \end{bmatrix} \\
+\vec{v} \times \vec{w} = \det \left( 
+\begin{bmatrix} 3 & 2 \\  1 & -1 \end{bmatrix}
+\right)
+```
+- area and vector direction
+    - if the vectors are more perpendicular, the area is larger
+    - and smaller, if the vectors have more similarr direction
+- area and scaling 
+    - if one vector is scaled, the area becomes scaled by same factor
+    - $(3\vec{v}) \times \vec{w} = 3(\vec{v} \times \vec{w})$
+- BUT this is not yet the cross product
+
+### Cross Product
+- the cross product of two vectors is another vector: $\vec{v} \times \vec{w} = \vec{p}$
+- area of the parallelogram is the length of new vector
+- direction of new vector is perpendicular to this parallelogram: but which way?
+- get orientation via right-hand rule
+    - index finger points foward ↖ for $\vec{v}$
+    - middle finger points left ← for $\vec{w}$
+    - thumb points up ↑ for $\vec{p}$
+- example
+    - $\vec{v}$ points in z-direction and $\vec{w}$ points in y-direction
+    - parallelogram has area of 4, so the cross product has length 4
+    - using right-hand rule, we can deduce the cross product points into negative x-direction
+```math
+\vec{v} = \begin{bmatrix} 0 \\ 0 \\ 2 \end{bmatrix},
+\vec{w} = \begin{bmatrix} 0 \\ 2 \\ 0\end{bmatrix} \\
+\vec{v} \times \vec{w} = \begin{bmatrix} -4 \\ 0 \\  0 \end{bmatrix}
+```
+
+### Notation Trick
+- write down both 3d input vectors as 2nd and 3rd column of a 3x3 matrix
+- for 1st column insert the basis vectors
+- then compute the determinant of that matrix
+- this is how to get the cross product from the determinant
+```math
+\begin{bmatrix} v_1 \\ v_2 \\ v_3 \end{bmatrix} \times
+\begin{bmatrix} w_1 \\ w_2 \\ w_3 \end{bmatrix} =
+\det \left(
+\begin{bmatrix} \hat{i} & v_1 & w_1 \\ \hat{j} & v_2 & w_2 \\ \hat{k} & v_3 & w_3 \end{bmatrix}
+\right) \\ \text{} \\
+= \hat{i}(v_2 w_3 - v_3 w_2) + \hat{j}(v_3 w_1 - v_1 w_3) + \hat{k}(v_1 w_2 - v_2 w_1)
+```
+- this is a notational trick, but it's far from intuitive → intuition behind this in next chapter
