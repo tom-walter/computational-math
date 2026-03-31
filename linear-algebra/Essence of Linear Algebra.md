@@ -632,14 +632,13 @@ x \begin{bmatrix} a \\ c \end{bmatrix} + y \begin{bmatrix} c \\ d \end{bmatrix} 
 ```math
 \vec{v} = \begin{bmatrix} 0 \\ 0 \\ 2 \end{bmatrix},
 \vec{w} = \begin{bmatrix} 0 \\ 2 \\ 0\end{bmatrix} \\
-\vec{v} \times \vec{w} = \begin{bmatrix} -4 \\ 0 \\  0 \end{bmatrix}
+\vec{v} \times \vec{w} = \begin{bmatrix} -4 \\ 0 \\  0 \end{bmatrix} \\
 ```
 
 ### Notation Trick
 - write down both 3d input vectors as 2nd and 3rd column of a 3x3 matrix
 - for 1st column insert the basis vectors
-- then compute the determinant of that matrix
-- this is how to get the cross product from the determinant
+- roll out the steps of determinant of that matrix (but don't compute yet)
 ```math
 \begin{bmatrix} v_1 \\ v_2 \\ v_3 \end{bmatrix} \times
 \begin{bmatrix} w_1 \\ w_2 \\ w_3 \end{bmatrix} =
@@ -648,4 +647,102 @@ x \begin{bmatrix} a \\ c \end{bmatrix} + y \begin{bmatrix} c \\ d \end{bmatrix} 
 \right) \\ \text{} \\
 = \hat{i}(v_2 w_3 - v_3 w_2) + \hat{j}(v_3 w_1 - v_1 w_3) + \hat{k}(v_1 w_2 - v_2 w_1)
 ```
+- the steps from the determinant give you the elements of the cross-product
+```math
+p_1 = \hat{i}(v_2 w_3 - v_3 w_2) \\
+p_2 = \hat{j}(v_3 w_1 - v_1 w_3) \\
+p_3 = \hat{k}(v_1 w_2 - v_2 w_1)
+```
 - this is a notational trick, but it's far from intuitive → intuition behind this in next chapter
+
+## Chapter 11: Cross Products and Linear Transformation
+### Recap
+- we learned funny trick to compute 3d cross product $\vec{v} \times \vec{w} = \vec{p}$ with basis vectors and determinant of a matrix 
+- the steps from this computation gave us 3 numbers that are coordinates of the resulting vector
+- students "should believe" that resulting has the properties
+    - length of $\vec{p}$ = area of parallelogram of $\vec{v}, \vec{w}$
+    - perpendicular $\perp$ to $\vec{v}$ and $\vec{w}$
+    - direction obeys right-hand rule
+- this can be confirmed by other computations (brute-force)
+```math
+\vec{v} \cdot (\vec{v} \times \vec{w}) = 0 \\
+\vec{w} \cdot (\vec{v} \times \vec{w}) = 0 \\
+\theta = \cos^{-1}\frac{\vec{v} \cdot \vec{w}}{||\vec{v}|| \cdot ||\vec{w}||} \\
+||(\vec{v} \times \vec{w})|| = (||\vec{v}||)(||\vec{w}||) \sin(\theta)
+```
+- but it's not intuitive
+
+### Duality (Recap)
+- any linear transformation of 2d-to-1d is associated with a unique vector in that 2D space
+- the linear transformation is the same as taking dot product with that vector
+- for this case both operations: matrix-vector multiplication & dot product of vectors are identical
+```math
+\text{linear transform} \iff \text{dot product} \\
+\begin{bmatrix} u_x & u_y \end{bmatrix}
+\begin{bmatrix} x \\ x \end{bmatrix}
+=
+\begin{bmatrix} u_x \\ u_y \end{bmatrix}
+\begin{bmatrix} x \\ y \end{bmatrix}
+```
+- called the dual vector of this linear transformation
+
+### Alternative Approach
+- plan
+    1. define a 3d-to-1d linear transformation in terms of $\vec{v}$ and $\vec{v}$
+    2. find its *dual vector*
+    3. show that this dual is $\vec{v} \times \vec{w}$
+- to clear up the connection between computation and the geometry of cross product
+
+1. Define a 3d-to-1d Function
+- the 2d cross product takes two vector and returns a number, using the determinant / spanning the area of the parallelogram
+- the 3d cross product takes two vectors and returns a new vector, but instead of inserting basis vector let's insert the variables $x, y, z$
+- this defines a function from 3d to the number line
+    - you input some vector and get out a number by taking the determinant of a matrix whose 1st column is $x, y, z$ and the other two columns correspond to the constants of $\vec{v}$ and $\vec{w}$
+    - geometric meaning: for any input vector of $x, y, z$, consider the parallelipiped define by $\vec{v}$ and $\vec{w}$ to returns its volume (with sign for orientation)
+- this function is linear!
+```math
+f \left( \begin{bmatrix} x \\ y \\ z \end{bmatrix} \right) = 
+\det \left( 
+\begin{bmatrix} x & v_1 & w_1 \\ y & v_2 & w_2 \\ z& v_3 & w_3 \end{bmatrix}
+ \right) 
+```
+
+2. Find Dual Vector
+- since we know the function is linear, we also know it can be described by matrix multiplication
+- in this case, there must be a 1x3 matrix to encode this linear transformation
+- and duality tells us this matrix has a dual vector, i.e. turning the matrix on the side
+```math
+\begin{bmatrix} ? & ? & ? \end{bmatrix} 
+\begin{bmatrix} x \\ y \\ z \end{bmatrix} = 
+\begin{bmatrix} ? \\ ? \\ ? \end{bmatrix} \cdot
+\begin{bmatrix} x \\ y \\ z \end{bmatrix} 
+ ```
+- we can call this special vector $\vec{p}$ such that any dot product between $\vec{p}$ and any other vector $x, y, z$ gives the same result as the determinant
+```math
+\begin{bmatrix} p_1 \\ p_2 \\ p_3 \end{bmatrix} \cdot
+\begin{bmatrix} x \\ y \\ z \end{bmatrix} = 
+\det \left( 
+\begin{bmatrix} x & v_1 & w_1 \\ y & v_2 & w_2 \\ z& v_3 & w_3 \end{bmatrix}
+ \right) 
+```
+
+3. Dual Vector as Cross Product
+- we can work through the computation steps of the determinant to organize the right side with constants
+    - where the constants are components of $\vec{v}$ and $\vec{v}$
+```math
+p_1 \cdot x = x(v_2 w_3 - v_3 w_2) \\
+p_2 \cdot y = y(v_3 w_1 - v_1 w_3) \\
+p_3 \cdot z = z(v_1 w_2 - v_2 w_1) \\
+```
+- the multiplication $x, y, z$ cancels out on both sides and we get the components of $\vec{p}$ that we are looking for
+```math
+p_1 = v_2 w_3 - v_3 w_2 \\
+p_2 = v_3 w_1 - v_1 w_3 \\
+p_3 = v_1 w_2 - v_2 w_1
+```
+- this is not different than plugging in the symbols of the basis vectors
+- both methods can be interpreted as the coordinates of the new vector
+
+### Geometric Interpretation
+
+## Chapter 12: Cramer's Rule
