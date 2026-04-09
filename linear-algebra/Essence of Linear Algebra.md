@@ -746,3 +746,124 @@ p_3 = v_1 w_2 - v_2 w_1
 ### Geometric Interpretation
 
 ## Chapter 12: Cramer's Rule
+### Introduction
+- there is method for solving systems of linear equations called **Cramer's rule**
+- requires knowledge of determinants and dot products
+- Cramer's rule is not the best, Gaussian elimination is always faster
+- but understanding Cramer's rule consolidates previous concepts of linear algebra
+
+### Cramer's Rule in 2D
+- we have a linear system of equations with 2 unknowns called $x, y$ and two equations
+    - as long as the number of unknowns and number of equations are the same, this will work for larger dimensions too
+- this system can be expressed as matrix transforming the vector of unknowns
+```math
+\begin{align*}
+3x + 2y &= -4 \\
+-1x + 2y &= - 2 \\
+\begin{bmatrix} 3 & 2 \\ -1 & 2 \end{bmatrix}
+\begin{bmatrix} x \\ y \end{bmatrix}
+&=
+\begin{bmatrix} -4 \\ -2 \end{bmatrix}
+\end{align*}
+```
+- written in words, this asks the question what input vector gets moved over the the known output vector given this matrix
+    1. if the determinant of matrix is not zero, there is only one such vector
+    2. if the determinant of matrix is zero, either no input vector or a whole bunch lands on the output vector
+- for this chapter, we only use non-zero determinant matrices as transformations
+- note: transformations don't usually preserve the dot product and the special case of transformations that do are called **orthonormal**
+    - if $T(\vec{v}) \cdot T(\vec{w}) = \vec{v} \cdot \vec{w}$ for all $\vec{v}$ & $\vec{w}$, then $T$ is orthonormal
+    - rotation matrices are orthonormal
+- so what other changes by the transformation (that we know) helps solve the linear system of equations? → determinants and areas
+    - take the area of parallelogram of the basis vector $\hat{i}$ and the input vector $x, y$
+    - this area has basis of 1 and height of $y$ meaning the signed area $= y$ 
+    - similarly, parallelogram of the basis vector $\hat{j}$ and the input vector $x, y$ has the signed area $= x$
+- why think of areas (or volumes in 3D) as coordinates?
+    - because all areas/volumes are changed by the same amount thru the transformation
+    - this scaling amount is the determinant $det(A)$
+    - so the signed area of our special parallelograms with the basis vectors is also scaled by the determinant and we can solve for the unknown variable
+    - the unknown variable is the area over the determinant
+    - for the area in the numerator we can plugin the known output vector in the column corresponding to the unknown
+- plugging in data from the output vector and using the our knowledge a of linear transformation's determinants & areas, we can solve for the unknown vector
+1. solve for $y$
+```math
+\text{area}\left(\hat{i}, \begin{bmatrix} x \\ y \end{bmatrix}\right) = \det(A)y \\
+y = \frac{\text{area}}{\det(A)}
+```
+2. solve for $x$ 
+```math
+\text{area}\left(\hat{j}, \begin{bmatrix} x \\ y \end{bmatrix}\right) = \det(A)x \\
+x = \frac{\text{area}}{\det(A)}
+```
+
+
+### Visualization for Cramer's Rule in 2D
+- solve for $y$
+```math
+y = \frac{\text{area}}{\det(A)}
+= \frac{
+    \det\left(\begin{bmatrix} 2 & 4 \\ 0 & 2 \end{bmatrix}\right)
+}{
+    \det\left(\begin{bmatrix} 2 & -1 \\ 0 & 1 \end{bmatrix}\right)
+}
+``` 
+<p align="center">
+<img src="essence-lin-alg-ch12-cramer-2d-y.png" alt="Parallelogram" width=450/>
+</p>
+
+- solve for $x$
+```math
+x = \frac{\text{area}}{\det(A)}
+= \frac{
+    \det\left(\begin{bmatrix} 4 & -1 \\ 2 & 1 \end{bmatrix}\right)
+}{
+    \det\left(\begin{bmatrix} 2 & -1 \\ 0 & 1 \end{bmatrix}\right)
+}
+``` 
+<p align="center">
+<img src="essence-lin-alg-ch12-cramer-2d-x.png" alt="Parallelogram" width=450/>
+</p>
+
+- solution
+```math
+\begin{bmatrix} x \\ y \end{bmatrix} =
+\begin{bmatrix} 3 \\ 2 \end{bmatrix}
+```
+
+### Cramer's Rule in 3D
+- this idea can also extend to linear systems in higher dimensions
+```math
+\begin{bmatrix} -4 & 2 & 3 \\ -1 & 0 & 2 \\ -4 & 6 & -9 \end{bmatrix}
+\begin{bmatrix} x \\ y \\ z \end{bmatrix}
+=
+\begin{bmatrix} 7 \\ -8 \\ 3 \end{bmatrix}
+```
+- we plugin in the known output vector in the column that corresponds from to unknown variable: from left to right $x, y, z$
+```math
+x = \frac{
+\det \left( 
+   \begin{bmatrix} \bold{7} & 2 & 3 \\ \bold{-8} & 0 & 2 \\ \bold{3} & 6 & -9 \end{bmatrix}
+\right)
+}{
+\det \left( 
+    \begin{bmatrix} -4 & 2 & 3 \\ -1 & 0 & 2 \\ -4 & 6 & -9 \end{bmatrix}
+\right)   
+} \\
+```
+```math
+y = \frac{
+\det \left( 
+   \begin{bmatrix} -4 & \bold{7} & 3 \\ -1 & \bold{-8} & 2 \\ -4 & \bold{3} & -9 \end{bmatrix}
+\right)
+}{
+\det (A)   
+} \\
+```
+```math
+z = \frac{
+\det \left( 
+   \begin{bmatrix} -4 & 2 & \bold{7}  \\ -1 & 0 & \bold{-8} \\ -4 & 6 & \bold{3} \end{bmatrix}
+\right)
+}{
+\det (A)   
+} \\
+```
