@@ -867,3 +867,109 @@ z = \frac{
 \det (A)   
 } \\
 ```
+
+## Chapter 13: Change of Basis
+### Coordinate & Vector Space
+```math
+\vec{v}
+=\begin{bmatrix} 2 \\ 3 \end{bmatrix}
+=\begin{bmatrix} 2 \hat{i} \\ 3 \hat{j} \end{bmatrix}
+```
+- we can describe vector via coordinates in space (all starting origin)
+    - go 3 left on x-axis and then 2 up on y-axis 
+- in linear algebra, each number in the vector is a scalar on the basis vector
+    - 1st coordinate scales $\hat{i}$ and 2nd coordinate scales $\hat{j}$ 
+
+### Implicit Assumptions
+- basis vectors $\hat{i}$ and $\hat{j}$ construct a coordinate system
+- they have a direction $\hat{i}$ left, and $\hat{j}$ up
+- they have a unit of distance
+- thus we can use use numbers to describe vectors in this coordinate space 
+- but the direction and distance are arbitrary
+
+### Alternate Basis Vectors
+- imagine another system with alternate basis vectors $b_1, b_2$
+- in this system, the same vector $\vec{v}$ from before would be described as
+```math
+\vec{v}
+=\begin{bmatrix} (5/3) \\ (1/3) \end{bmatrix}
+=\begin{bmatrix} (5/3) b_1 \\ (1/3) b_2 \end{bmatrix}
+```
+- in our system $B$, these basis $b_1, b_2$ look like
+```math
+b^B_1 = \begin{bmatrix} 2 \\ 1 \end{bmatrix}, 
+b^B_2 = \begin{bmatrix} -1 \\ 1 \end{bmatrix}
+```
+- but the alternate system $A$ seems them as basis vector and hence as 
+```math
+b_1 = \begin{bmatrix} 1 \\ 0 \end{bmatrix}, 
+b_2 = \begin{bmatrix} 0 \\ 1 \end{bmatrix}
+```
+- the origin of all systems is the same $(0, 0)$
+
+### Translate Vectors between Systems
+- how can we translate a vector from the alternate system to our system?
+- we can use our representation of alternate systems basis vector to arrive at our version of the vector 
+```math
+\vec{a} = \begin{bmatrix} -1 \\ 2 \end{bmatrix} \\
+\begin{align*}
+\vec{a}^B &= -1 b^B_1 + 2 b^B_2 \\
+\vec{a}^B &= 
+-1 \begin{bmatrix} 2 \\ 1 \end{bmatrix}
++2 \begin{bmatrix} -1 \\ 1 \end{bmatrix} \\
+\vec{a}^B &= \begin{bmatrix} -4 \\ 1 \end{bmatrix} \\
+\vec{a}^B &=
+\begin{bmatrix} 2 & -1 \\ 1 & 1 \end{bmatrix}
+\begin{bmatrix} -1 \\ 2 \end{bmatrix}
+\end{align*}
+```
+- this transforrmation should be familiar as matrix-vector multiplication
+- the matrix's columns are the alternate systems basis vectors in our language
+- this matrix
+    1. geometrically, it transforms our grid into alternate grid
+    2. but numerically, it translates a vector from alternate language to our language
+```math
+\begin{bmatrix} 2 & -1 \\ 1 & 1 \end{bmatrix}
+```
+
+- how about the other way around?
+    - we use the **inverse of this matrix** which reverses the directions
+    1. transforms alternate grid into our grid
+    2. translates vector from our language to alternate language
+```math
+\begin{bmatrix} 2 & -1 \\ 1 & 1 \end{bmatrix}^{-1}
+=
+\begin{bmatrix} 1/3 & 1/3 \\ -1/3 & 2/3 \end{bmatrix}
+```
+- let's translate our original vector $\vec{v}$ into the alternate system
+```math
+\begin{bmatrix} 1/3 & 1/3 \\ -1/3 & 2/3 \end{bmatrix}
+\begin{bmatrix} 2 \\ 3 \end{bmatrix}
+=
+\begin{bmatrix} 5/3 \\ 1/3 \end{bmatrix}
+```
+
+### Translate Matrices between Systems
+- recap on **matrix composition**
+    - if you have multiple transformation applied successively, you can also compose them into one transformation by matrix-matrix multiplication
+    - order of steps matters: executed right to left
+- a 90° counter-clockwise rotation as matrix in our system
+```math
+\begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}
+``` 
+- for alternate system, it should describe where alternate system's basis vectors land
+- step-by-step
+    - use the change-of-basis matrix (translates vector from alternate to our system)
+    - multiply it by the roration matrix (or any other transforrmation that you want to achieve)
+    - reverse translation by multiplying with inverse of change-of-basis matrix
+    - gives the rotation matrix in the alternate system
+```math
+\begin{bmatrix} 2 & -1 \\ 1 & 1 \end{bmatrix}^{-1}
+\begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}
+\begin{bmatrix} 2 & -1 \\ 1 & 1 \end{bmatrix}
+=
+\begin{bmatrix} 1/3 & -2/3 \\ 5/3 & -1/3 \end{bmatrix}
+```
+- expression like $A^{-1} M A$ suggests translation of a transforation between systems
+    - where $M$ is the transformation in our system
+    - and $A^{-1}$ and $A$ suggest the change between systems
