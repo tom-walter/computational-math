@@ -970,6 +970,164 @@ b_2 = \begin{bmatrix} 0 \\ 1 \end{bmatrix}
 =
 \begin{bmatrix} 1/3 & -2/3 \\ 5/3 & -1/3 \end{bmatrix}
 ```
-- expression like $A^{-1} M A$ suggests translation of a transforation between systems
+- expression like $A^{-1} M A$ suggests translation of a transformation between systems
     - where $M$ is the transformation in our system
     - and $A^{-1}$ and $A$ suggest the change between systems
+
+## Chapter 14: Eigenvectors and Eigenvalues
+### Introduction
+- *eigen*-things (vectors, values, basis) require many prerequisites: linear transformations, spans, determinants, linear systems, change of basis
+- consider the transformation
+```math
+\begin{bmatrix} 3 & 1 \\ 0 & 2 \end{bmatrix}
+```
+- it moves the basis vectors $\hat{i}$ to position $3, 0$ and $\hat{j}$ to $1, 2$
+- some vectors in vector space will be knocked off their span
+- but what about the vectors that remain on their span?
+    - on which the transformation only acts like a scalar (stretch, squish, flip)
+- one such un-knocked vector in the above transformation is $\hat{i}$ 
+    - it remains on the x-axis and gets streched by 3
+    - any other vector on the x-axis also remains there and is scaled by 3
+```math
+3 \cdot \begin{bmatrix} 1 \\ 0 \end{bmatrix}
+```
+- another un-knocked vector is $-1, 1$, which gets scaled by factor 2
+    - linearity implies any other vector on this diagonal also remains on its span and is scaled by 2
+```math
+2 \cdot \begin{bmatrix} -1 \\ 1 \end{bmatrix}
+```
+- for this transformation, all vectors on those 2 lines remain on their span, all other get knocked off
+- these special vectors are **eigenvectors** and their scalars are **eigenvalues** of the transformation
+    - eigenvalues can be fractions and/or negative
+
+### Eigenvector & Eigenvalue
+- we can learn more about a transformation via its eigenvectors and eigenvalues
+- no full method of computation but general approach & import parts discussed in this chapter
+- symbolic representation
+    - $A$ is transformation matrix
+    - $\bold{\vec{v}}$ is eigenvector
+    - $\lambda$ is eigenvalue
+```math
+A \bold{\vec{v}} = \lambda \bold{\vec{v}}
+```
+- the matrix-vector product of the transformation with eigenvector (left) gives same result as scaling the eigenvector with the eigenvalue (right)
+    - so finding eigenvector and eigenvalue comes down to solving for $\bold{\vec{v}}$ and  $\lambda$
+- observe different types of muliplication
+    - we can expand the right to make scalar-vector into matrix-vector multiplication
+    - this gives a matrix where each vector would only be scaled by $\lambda$ (or more precisly, only each basis vector is scaled by $λ$)
+    - from this diagonal $λ$-matrix we can factor out λ again and get the identity matrix $I$ (only 1s on the diagonal)
+```math
+\begin{align*}
+\lambda \bold{\vec{v}} &=
+\begin{bmatrix} λ & 0 & 0 \\ 0 & λ & 0 \\ 0 & 0 & λ \end{bmatrix} \bold{\vec{v}} \\
+&= λ \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix} \bold{\vec{v}} \\
+&= (λI) \bold{\vec{v}}
+\end{align*}
+```
+- we can plug this into previous equation
+    - subtract right from left
+    - factor out $\bold{\vec{v}}$
+```math
+A \bold{\vec{v}} = (λI) \bold{\vec{v}} \\
+A \bold{\vec{v}} -(λI) \bold{\vec{v}} = 0 \\
+(A - λI) \bold{\vec{v}} = \vec{0}
+```
+- the term $(A - λI)$ gives us a new matrix and where we look for a vector that gives us the zero-vector
+- there are two cases
+    1. $\bold{\vec{v}}$ is also the zero-vector
+    1. $\bold{\vec{v}}$ is a non-zero vector (more interesting case)
+- reminder (ch 5, 6):
+    - product of matrix with non-zero vector can only become zero, if the transformation reduces dimension, i.e. has a zero determinant
+    - $\det(A - λI) = 0$
+- this also means there is non-zero vector that will become zero after this specifc transformation $(A - λI)$, which is the eigenvector (a vector that remains on its span) after the original transformation $A$
+- solving this for the eigenvectors means that each eigenvector has an associated eigenvalue 
+
+### 2x2 Matrix: Eigenvalues
+- you can try plugging in different values for $λ$ until the determinant is zero
+- but for 2x2 matrices, finding $λ$ from the determinant is equivalent to solving a polynomial of 2
+```math
+\begin{align*}
+\det(A - λI) = 0 \\
+\det \left(
+\begin{bmatrix} 1 & 2 \\ 5 & 4 \end{bmatrix} -
+λ \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} 
+\right) = 0 \\
+\det \left(
+\begin{bmatrix} 1-λ & 2 \\ 5 & 4-λ \end{bmatrix}
+\right) = 0 \\
+(1-λ) \times (4-λ) - (2 \times 5) = 0 \\
+4 - λ - 4λ + λ^2 - 10 = 0 \\
+λ^2 - 5λ - 6 = 0 \\
+λ^2 - (6λ - λ) - 6 = 0 \\
+λ^2 - 6λ + λ - 6 = 0 \\
+(λ-6)(λ+1) = 0
+\end{align*}
+```
+- there are two possible values: $λ=6$ and $λ=-1$
+
+### Special Cases
+- some linear transformations. e.g. 90° rotation matrix, does not have any eigenvectors, since all vectors are moved
+```math
+\begin{align*}
+\det(A - λI) = 0 \\
+\det \left(
+\begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix} -
+λ \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} 
+\right) = 0 \\
+\det \left(
+\begin{bmatrix} -λ & -1 \\ 1 & -λ \end{bmatrix}
+\right) = 0 \\
+(-λ)(-λ)-(-1)(1) = 0 \\
+(-λ)(-λ) = 0
+\end{align*}
+```
+- the only roots are the imaginary numbers $i$ (no real number solutions mean no eigenvectors)
+- another example is the shear,  which only has one eigenvalue of $λ=1$ 
+```math
+\begin{align*}
+\det(A - λI) = 0 \\
+\det \left(
+\begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix} -
+λ \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} 
+\right) = 0 \\
+\det \left(
+\begin{bmatrix} 1-λ & 1 \\ 0 & 1-λ \end{bmatrix}
+\right) = 0 \\
+(1-λ)(1-λ) = 0 \\
+\end{align*}
+```
+- in a scaling matrix (only non-zero numbers on the diagonal), all vectors are eigenvectors and all eigenvalues are the diagonal numbers
+
+### Diagonal Matrix
+- a matrix where only non-zero numbers are on the diagonal is called a **diagonal matrix**
+- this means all basis vector are also the eigenvectors with the diagonal entries also being their respective eigenvalues
+- diagonal matrix has the property that you can easily take power of the matrix (much harder for non-diagonal matrices)
+    - the power of the diagonal matrix is just applied to the each value on the diagonal
+```math
+\begin{bmatrix} 3 & 0 \\ 0 & 2 \end{bmatrix}^{100} = 
+\begin{bmatrix} 3^{100} & 0 \\ 0 & 2^{100} \end{bmatrix}
+```
+- but it's rare that the basis vectors are also eigenvectors 
+- however, there is a trick to translate a transformation the basis vectors become eigenvectors
+
+### Eigenbasis
+```math
+\begin{bmatrix} 1 & -1 \\ 0 & 1 \end{bmatrix}^{-1}
+\begin{bmatrix} 3 & 1 \\ 0 & 2 \end{bmatrix}
+\begin{bmatrix} 1 & -1 \\ 0 & 1 \end{bmatrix}
+=
+\begin{bmatrix} 3 & 0 \\ 0 & 2 \end{bmatrix}
+```
+- recap: change of basis
+    - translates a transformation from one system into another system of basis vectors
+- put the basis vectors of the other system into "change of basis" matrix
+    - in this case use the eigenvectors of the original transformation 
+- translation expression is inverse of CoB, transformation, CoB equals diagonal matrix
+    - $C^{-1} A C = D$
+- the new, composed matrix of this expression is the same transformation but from perspective of the new basis vector's coordinate system
+- further, this new matrix is guaranteed to be diagonal with its eigenvalues on the diagonal and its called an **eigenbasis**
+- so if you want to compute original matrix's 100th power
+    - translate to the eigenbasis
+    - then compute 100th power
+    - translate back
+- **caution**: this doesn't work with all transformations (there need to be enough eigenvectors)
