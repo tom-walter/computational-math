@@ -1029,7 +1029,7 @@ A \bold{\vec{v}} = \lambda \bold{\vec{v}}
     - factor out $\bold{\vec{v}}$
 ```math
 A \bold{\vec{v}} = (λI) \bold{\vec{v}} \\
-A \bold{\vec{v}} -(λI) \bold{\vec{v}} = 0 \\
+A \bold{\vec{v}} -(λI) \bold{\vec{v}} = \vec{0} \\
 (A - λI) \bold{\vec{v}} = \vec{0}
 ```
 - the term $(A - λI)$ gives us a new matrix and where we look for a vector that gives us the zero-vector
@@ -1131,3 +1131,98 @@ A \bold{\vec{v}} -(λI) \bold{\vec{v}} = 0 \\
     - then compute 100th power
     - translate back
 - **caution**: this doesn't work with all transformations (there need to be enough eigenvectors)
+
+## Chapter 15: Trick for Computing Eigenvalues
+### Recap: Eigenvector and Eigenvalues
+- if the effect of linear transformation on some vector is only to scale that vector
+    - then that vector is an eigenvector of that transformation
+    - and the scaling factor is the eigenvalue $λ$
+```math
+A \bold{\vec{v}} = λ \bold{\vec{v}} \\
+```
+- we can solve for $λ$ by applying the following steps to get the determinant
+    1. re-write $λ$ with identity matrix $I$ to get matrix-product on both sides
+    2. substract $(λI)\vec{v}$ from both sides
+    3. factor out the eigenvector $\vec{v}$ 
+    4. a non-zero vector becomes zero-vector, if determinant is zero
+```math
+A \bold{\vec{v}} = λ \bold{\vec{v}} \\
+A \bold{\vec{v}} = (λI) \bold{\vec{v}} \\
+A \bold{\vec{v}} -(λI) \bold{\vec{v}} = \vec{0} \\
+(A - λI) \bold{\vec{v}} = \vec{0} \\
+\det(A- λI) = 0
+```
+
+### Find Eigenvalues with Characteristic Polynomial
+- traditional way of finding eigenvalues is
+    - substract $λ$ from the diagonal of the matrix
+    - write out the determinant steps
+    - get the characteristic polynomial of the matrix
+    - solve for what $λ$ makes determinant zero
+- find eigenvalues of 
+```math
+\begin{bmatrix} 3 & 1 \\ 4 & 1 \end{bmatrix} \\
+\det \left(
+\begin{bmatrix} 3-λ & 1 \\ 4 & 1-λ \end{bmatrix}
+\right) \\
+= (3-λ) (1-λ) - (1) (4) \\
+= (3 - 4λ + λ^2) - 4 \\
+= λ^2 -4λ - 1
+```
+- $λ^2 -4λ - 1$ is the characteristic polynomial of this matrix and its roots are the eigenvalues $λ_1, λ_2$  
+- apply the quadratic formula
+    - where the plus-minus $\pm$ indicates two solutions
+    - $a, b, c$ are known coefficients with $a \ne 0$
+```math
+x = \frac{-b \pm \sqrt{b^2-4ac}}{2a} \\ \\
+λ_1, λ_2 = \frac{4 \pm \sqrt{4^2-4(1)(-1)}}{2(1)} \\
+λ_1, λ_2 = \frac{4 \pm \sqrt{20}}{2} = 2 \pm \sqrt{5}
+```
+
+### Alternative Mean-Product Method (for 2×2 Matrix)
+1. trace of a matrix
+    - the trace is the sum of the diagonal values
+    - the trace is equal to sum of eigenvalues
+    - more useful, the mean of the trace is the mean of the eigenvalues (simply divide by 2)
+```math
+tr\left( \begin{bmatrix} a & b \\ c & d \end{bmatrix} \right)
+= a + d = λ_1 + λ_2 \\
+\frac{1}{2} tr\left( \begin{bmatrix} a & b \\ c & d \end{bmatrix}  \right)
+= \frac{a + d}{2} = \frac{λ_1 + λ_2}{2}
+```
+2. determinant of a matrix
+    - the determinant is equal to the product of eigenvalues
+    - intuition is the determinant scales the whole area, while each eigenvalue stretches an eigenvector in its direction
+```math
+\det\left( \begin{bmatrix} a & b \\ c & d \end{bmatrix} \right)
+= ad - bc = λ_1 λ_2
+```
+3. distance of mean and roots
+```
+            λ₁  ←  -d   ←   m   →  +d   →   λ₂
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+0   1   2   3   4   5   6   7   8   9  10  11  12  13  14
+```
+- we can start with a matrix and quickly compute the mean and product of its eigenvalues
+```math
+\begin{bmatrix} 8 & 4 \\ 2 & 6 \end{bmatrix} \\
+m = (8+6)/2 = 7 \\
+p = (8)(6)-(4)(2)= 48-8 = 40
+```
+- from a given mean and product, we can recover their two input numbers
+    - they must be evenly spaced around the mean $m$ by some distance $d$
+    - we also know their product must be 40
+    - $40 = (7+d) (7-d)$ can be re-written as two squares
+    - $40 = 7^2 - d^2$ re-arange for $d^2$ 
+    - $d^2 = 7^2 - 40 = 49 - 40 = 9$ compute square root
+    - $d = 3$
+4. generalize
+    - for any mean $m$ and product $p$, the distance $d$ squared equals the means squared minus product
+    - the quadratic solution to the mean-product equation is shorter than the general quadratic formula
+    - the roots it gives are out eigenvalues
+```math
+p = (m+d)(m-d) \\
+p = m^2 - d^2 \\
+d^2 = m^2 - p \\
+λ_1, λ_2 = m \pm \sqrt{m^2 - p}
+```
