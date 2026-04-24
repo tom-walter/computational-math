@@ -1226,3 +1226,163 @@ p = m^2 - d^2 \\
 d^2 = m^2 - p \\
 λ_1, λ_2 = m \pm \sqrt{m^2 - p}
 ```
+
+## Chapter 16: Abstract Vector Spaces
+### Revisit: What are vectors?
+- an arrow, a coordinate, an ordered list of numbers?
+- an ordered list of numbers is unambiguous and allows more than 2 dimensions to be handled concretely
+- but with familiarity of change of basis, we can also say that vectors exist regardless of what numbers we assign them
+- determinants and eigenvectors seem indifferent to choice of coordinate system
+    - determinants tell about scaling areas / volumes of a transformation
+    - eigenvectors stay on span after a transformation
+    - you can change underlying coordinate space without changing their values
+- so "what exactly is space?" may be the better question
+
+### Functions as vector-ish Things
+- in same way you can add vectors, you can add functions 
+    - $(f+g)(x) = f(x) + g(x)$
+    - the value of the sum-function at any given input $x$ is the sum of values of each of the individual functions at $x$
+    - it's the same as adding vectors coordinate by coordinate (just that there are infinitely many coodinates)
+- the is also same notion of scaling a function by a number
+    - $(2f)(x) = 2f(x)$
+    - analogous of scaling a vector by number or each of its coordinates by a number
+- given that additivity and scaling are the definition of linear, we should be able to apply techniques of linear algebra to functions too
+    - e.g. linear transformations, null space, dot product, eigen-things
+- linear transformation for functions
+    - takes in one function and turns it into another
+    - one example comes from calculus: the **derivative**
+    - in calculus, linear transformations are linear operators
+```math
+L \left( \frac{1}{9}x^3-x \right) = \frac{1}{3}x^2-1 \\
+\frac{d}{dx} \left( \frac{1}{9}x^3-x \right) = \frac{1}{3}x^2-1
+```
+
+### Formal Definition of Linear
+- what does it mean for function transformation to be linear?
+- the formal definition is symbolically driven but its abstractness lets us apply it to functions 
+    - a transformation is linear if it satifies two properties
+    1. additivity:
+        - $L(\vec{v} + \vec{w}) = L(\vec{v}) + L(\vec{w})$
+        - if you apply a transformation to the sum of 2 vectors, the result is the same as summing the individually transformed vectors
+    2. scaling: $L(c\vec{v}) = c L(\vec{v})$
+        - if you scale a vector by some number and trasnform it, the result is the same as the transforming the vector 1st and then scaling it
+    > linear transformations preserve addition and scalar multiplication
+- geometric definition of grid lines remaining parallel and evenly spaced (and origin fixed) is an illustration of what these properties mean in 2D space
+- this formal definition also means a linear transformation can be completely described by where its basis vectors land after the transformation
+    - this is true for functions and arrows
+
+### Derivative is Linear
+1. additivity
+    - if you add two functions and then take derivative, the result is the same as taking the derivative of 1st function plus the derivative of 2nd function
+```math
+L(\vec{v} + \vec{w}) = L(\vec{v}) + L(\vec{w}) \\
+\frac{d}{dx} (x^3 + x^2) = \frac{d}{dx}(x^3) + \frac{d}{dx}(x^2)
+``` 
+2. scaling
+    - if you scale a function and then take the derivative, the result is the same as 1st taking the derivative and then scaling it
+```math
+L(c\vec{v}) = c L(\vec{v}) \\
+\frac{d}{dx}(4x^3) = 4\frac{d}{dx}(x^3)
+```
+
+### Polynomial as Vector and Derivative as Matrix
+- let's limit the function space to all **polynomials**
+    - each function will have finite polynomial terms
+    - but full space includes polynomials with arbitrarily large degrees
+- giving coordinates to this space requires which requires choosing a basis
+    - polynomials are already written as the sum of scaled powers of variable $x$
+        - e.g.: $1x^2+ 3x + 5(1)$ is already a linear combination 
+    - naturally, we can choose pure powers of $x$ as the basis function
+```math
+\begin{align*}
+b_0 (x) &= 1 \\
+b_1 (x) &= x \\
+b_2 (x) &= x^2 \\
+b_3 (x) &= x^3 \\
+... \\
+b_{n}(x) &= x^n
+\end{align*}
+```
+- these basis functions serve role similar to basis vectors $\hat{i}, \hat{j}, ...$
+- but since polynomial degrees are infinite, the set of basis functions is infinite too
+    - polynomials as vectors have infinitely many coordinates
+    - it will be okay though, since all unused degrees will become zero
+```math
+1x^2+ 3x + 5(1) = \\
+5(1) + 3x + 1x^2 + 0x^4 + 0x^5 + ... =
+\begin{bmatrix} 5 \\ 3 \\ 1 \\ 0 \\ 0 \\ ... \end{bmatrix}
+```
+- in this coordinate system, derivatives are described by infinite matrix (mostly full of zeroes as well), but with positive integers counting on the offset diagonal 
+```math
+\frac{d}{dx} = 
+\begin{bmatrix} 
+0 & 1 & 0 & 0 & ... \\
+0 & 0 & 2 & 0 & ... \\
+0 & 0 & 0 & 3 & ... \\
+0 & 0 & 0 & 0 & ... \\ 
+... & ... & ... & ... & ...
+\end{bmatrix}
+```
+- now, we can apply this matrix to find the derivative of a polynomial function
+<p align="center">
+<img src="essence-lin-alg-ch16-polynomial-derivate-matrix.png" alt="Parallelogram" width=450/>
+</p>
+
+```math
+\frac{d}{dx} (1x^3 + 5x^2 + 4x + 5 )= 3x^2 + 10x + 4 \\
+\begin{bmatrix} 
+0 & 1 & 0 & 0 & ... \\
+0 & 0 & 2 & 0 & ... \\
+0 & 0 & 0 & 3 & ... \\
+0 & 0 & 0 & 0 & ... \\ 
+... & ... & ... & ... & ...
+\end{bmatrix}
+\begin{bmatrix} 5 \\ 4 \\ 3 \\ 1 \\ ... \end{bmatrix}
+= 
+\begin{bmatrix} 1 \cdot 4 \\ 2 \cdot 5 \\ 3 \cdot 1 \\ 0 \\ ... \end{bmatrix}
+```
+- this is possible because the derivative is linear, based on the previously defined properties
+- matrix-vector multiplication and derivatives are members of the same family
+```math
+\begin{bmatrix} a & b \\ c & d \end{bmatrix}
+\begin{bmatrix} x \\ y \end{bmatrix}
+\iff
+\frac{df}{dx}
+```
+- many linear algebra concepts we learned have analogues in world of functions
+    | Linear Algebra | Function World |
+    |----------------|----------------|
+    | linear transformation | linear operator |
+    | dot product | inner product |
+    | eigenvectors | eigenfunctions |
+
+### Vector Space as Abstraction
+- as long as we're dealing with a set of objects where there is notion adding and scaling, all of the tools developed in linear algebra should be able to apply
+- as mathematician, you want all tools and discoveries to apply to all vector-ish things (not just one specific case)
+    - vector-ish things (arrows, ordered list of numbers, functions) are called vector spaces
+- for your tools of linear algebra to apply to other vector-ish things, you provide rules that define what's a vector space
+    - these rules are called **axioms**
+- that's why the question of "what are vectors?" doesn't matter to mathematicians
+    - anything that satisfies these rules can be a vector space
+- same as asking "what does 3 mean?"
+    - whenever its in context, there is a triplet of things
+    - but in math, it's an abstraction that lets us reason about any and all triplet of things
+
+### Axioms
+- rules for vector addition and scaling 
+1. Associativity of Vector Addition
+    - $\vec{u} + (\vec{v} + \vec{w}) = (\vec{u} + \vec{v}) + \vec{w} $
+2. Communicativity of Vector Addition
+    - $\vec{v} + \vec{w} = \vec{w} + \vec{v}$
+3. Identity Element of Vector Addition
+    - there is a vector $\vec{0}$ (called zero-vector) such that $\vec{0} + \vec{v} = \vec{v}$ for all $\vec{V}$
+4. Inverse Element of Vector Addition
+    - for every vector $\vec{v}$, there is a vector $-\vec{v}$ so that $\vec{v} +  (-\vec{v}) = \vec{0}$
+5. Compatibility of Scalar Multiplication with Field Multiplication
+    - $a ( b \vec{v} ) = (a b) \vec{v}$
+6. Identity of Scalar Multiplication
+    - $1 \vec{v} = \vec{v}$
+7. Distributivity of Scalar Multiplication wrt Vector Addition
+    - $a (\vec{v} + \vec{w}) = a\vec{v} + a\vec{w}$
+8. Distributivity of Scalar Multiplication wrt  Field Addition
+    - $(a + b) \vec{v} = a\vec{v} + b\vec{v}$
